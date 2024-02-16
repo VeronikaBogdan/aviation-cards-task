@@ -25,7 +25,7 @@ export const Header = styled.div`
 
 export const ImageBook = styled.img.attrs(({ src }) => ({
   src: src,
-  alt: 'image: book',
+  alt: 'book',
 }))`
   width: 18px;
   height: 18px;

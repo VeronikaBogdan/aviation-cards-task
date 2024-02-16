@@ -1,12 +1,20 @@
 import { Cell } from '../cell';
-import { StyledRow } from './styled-row';
 
-export const Row = ({ lesson, hours, isTitled, children }) => (
-  <StyledRow isTitled={isTitled}>
-    <Cell label={lesson} isTitled={isTitled} isLeft />
-    <Cell label={hours} isTitled={isTitled} />
-    <Cell label={isTitled && 'Преподаватель'} isTitled={isTitled}>
+export const Row = ({ lesson, hours, isTitled, isSubgroup, children }) => (
+  <>
+    <Cell label={lesson} isTitled={isTitled} isLeft isSubgroup={isSubgroup} />
+    <Cell label={hours} isTitled={isTitled} isSubgroup={isSubgroup} />
+    {isSubgroup && (
+      <Cell label={isTitled && 'Подгруппа 1'} isTitled={isTitled} isSubgroup={isSubgroup}>
+        {!isTitled && children}
+      </Cell>
+    )}
+    <Cell
+      label={isTitled && (isSubgroup ? 'Подгруппа 2' : 'Преподаватель')}
+      isTitled={isTitled}
+      isSubgroup={isSubgroup}
+    >
       {children}
     </Cell>
-  </StyledRow>
+  </>
 );

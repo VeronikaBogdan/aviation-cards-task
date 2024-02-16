@@ -1,7 +1,9 @@
 import { Header, ImageBook, StyledCard } from './styled-card';
 
-import book from '../../assets/open-book-icon.png';
 import { DetailsInfo } from '../details-info';
+import { Table } from '../table';
+
+import book from '../../assets/open-book-icon.png';
 
 export const Card = () => (
   <StyledCard>
@@ -10,5 +12,6 @@ export const Card = () => (
       <span>Конкретная авиационная техника</span>
     </Header>
     <DetailsInfo />
+    <Table />
   </StyledCard>
 );

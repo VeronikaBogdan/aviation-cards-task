@@ -6,7 +6,7 @@ export const StyledContainer = styled.main`
   gap: 25px;
   margin: 0 auto;
   padding: 15px 0;
-  width: calc(100vw - 100px);
+  width: calc(100vw - 50px);
   max-width: 1440px;
 
   @media (max-width: 768px) {

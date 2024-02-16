@@ -3,7 +3,7 @@ import { Header, ImageBook, StyledCard } from './styled-card';
 import { DetailsInfo } from '../details-info';
 import { Table } from '../table';
 
-import book from '../../assets/open-book-icon.png';
+import book from '../../assets/open-book.png';
 
 export const Card = () => (
   <StyledCard>

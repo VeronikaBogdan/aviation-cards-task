@@ -8,18 +8,18 @@ export const Form = styled.form`
   margin-top: 15px;
 `;
 
-export const PlusButton = styled.input`
+export const AddRemoveButton = styled.button`
   display: flex;
   justify-content: center;
-  align-items: baseline;
-  margin-top: -3px;
-  padding-bottom: 3px;
+  align-items: center;
+  width: 20px;
+  height: 20px;
+  padding: 3px;
   background-color: ${WHITE};
   border: 0;
-  font-size: 30px;
-  font-weight: 400;
-  color: ${BLUE};
+  border-radius: 3px;
   cursor: pointer;
+  transition: box-shadow 0.2s;
 
   &:hover {
     box-shadow: 0px 0px 5px 3px ${LIGHT_GRAY};
@@ -35,8 +35,9 @@ export const AutoFillButton = styled.button`
   justify-content: center;
   align-items: center;
   background-color: ${BLUE};
-  width: 45px;
-  /* height: 50px; */
+  width: 39px;
+  height: 100%;
+  padding: 7px;
   border: 0;
   border-radius: 3px;
   margin-left: 3px;
@@ -48,51 +49,34 @@ export const AutoFillButton = styled.button`
   }
 `;
 
-export const Select = styled.select`
-  /* width: 100%;
-  height: 100px;
-  padding: 7px 0;
-  border: 1px solid ${LIGHT_GRAY};
-  border-radius: 3px;
-  text-align: center;
-  cursor: pointer;
-  appearance: none;
-  transition: border 0.2s; */
-  font-family: cursive, sans-serif;
+export const InputNumber = styled.input`
+  background-color: transparent;
+  border: 0;
   outline: 0;
-  background: #2ecc71;
-  color: #fff;
-  line-height: 30px;
-  border: 1px solid crimson;
-  padding: 4px;
+  text-align: center;
 
-  &:hover:not([disabled]) {
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
+`;
+
+export const Textarea = styled.textarea`
+  width: 100%;
+  border-radius: 3px;
+
+  &:hover {
     border: 1px solid ${MAYA_BLUE};
   }
 
-  &:focus:not([disabled]),
-  &:active:not([disabled]) {
+  &:focus,
+  &:active {
     border: 1px solid ${COBALT};
     outline: 0;
   }
-
-  &:not([multiple]) {
-    background-repeat: no-repeat;
-    background-position: calc(100% - 0.25em) 0.35em;
-    background-size: 0.85em auto;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'%3E%3Cpath d='M70.3 13.8L40 66.3 9.7 13.8z' fill='%23000'%3E%3C/path%3E%3C/svg%3E");
-  }
 `;
 
-export const OptionsWrapper = styled.div`
-  height: 100px;
-`;
-
-export const Option = styled.option`
-  /* border-radius: 19px; */
-  /* height: 50px !important; */
-  /* margin: 7px 0; */
-  /* background-color: aquamarine; */
-  z-index: 5;
-  /* border-radius: 2px; */
-`;
+export const selectStyles = {
+  container: (styles) => ({ ...styles, width: '100%' }),
+  menuList: (styles) => ({ ...styles, maxHeight: '130px' }),
+};

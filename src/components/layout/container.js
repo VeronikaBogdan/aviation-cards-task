@@ -10,6 +10,7 @@ export const StyledContainer = styled.main`
   max-width: 1440px;
 
   @media (max-width: 768px) {
+    grid-template-columns: 1fr;
     max-width: 640px;
   }
 

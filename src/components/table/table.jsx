@@ -36,7 +36,7 @@ export const Table = () => {
 
   return (
     <Form isSubgroup={isSubgroup}>
-      <Row lesson='Занятие' hours='Часы' isTitled isSubgroup={isSubgroup}>
+      <Row lesson='Занятие' hours='Часы' isTitled={true} isSubgroup={isSubgroup}>
         <AddRemoveButton type='button' onClick={() => setIsSubgroup(!isSubgroup)} isSubgroup={isSubgroup}>
           {isSubgroup ? (
             <img src={RevoveCart} alt='remove subgroup cart' />

@@ -9,13 +9,12 @@ export const StyledContainer = styled.main`
   width: calc(100vw - 50px);
   max-width: 1440px;
 
-  @media (max-width: 768px) {
+  @media (max-width: 935px) {
     grid-template-columns: 1fr;
     max-width: 640px;
   }
 
-  @media (max-width: 320px) {
-    max-width: 288px;
-    width: 100%;
+  @media (max-width: 450px) {
+    width: calc(100vw - 20px);
   }
 `;

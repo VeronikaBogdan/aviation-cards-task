@@ -16,11 +16,12 @@ export const Header = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 5px;
+  gap: 7px;
   padding: 16px;
   background-color: ${SKY};
   font-weight: 700;
   color: ${BLUE};
+  text-align: center;
 `;
 
 export const ImageBook = styled.img.attrs(({ src }) => ({

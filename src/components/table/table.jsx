@@ -12,11 +12,31 @@ import RevoveCart from '../../assets/remove-cart.png';
 import { AddRemoveButton, AutoFillButton, Form, InputNumber, Textarea, selectStyles } from './styled-table';
 
 export const Table = ({ teachersOptions, index }) => {
-  const { register } = useFormContext();
+  const { register, getValues, setValue } = useFormContext();
   const { data } = useSelector((state) => state.data);
 
   const [isSubgroup, setIsSubgroup] = useState(data[index].countPodgroups > 1);
   const [countPodgroups, setCountPodgroups] = useState(data[index].countPodgroups);
+  const [lectureTeacher, setLectureTeacher] = useState('');
+
+  const keys = [
+    'lectureTeacher',
+    'laboratoryTeacher',
+    'practiceTeacher',
+    'seminarTeacher',
+    'examTeacher',
+    'offsetTeacher',
+  ];
+
+  const fillAllSelects = () => {
+    const lectureTeacher = getValues(`lectureTeacher-0-${index}`);
+
+    if (+data[index].lecturesHours) setValue(`laboratoryTeacher-0-${index}`, lectureTeacher);
+    if (+data[index].practicHours) setValue(`practiceTeacher-0-${index}`, lectureTeacher);
+    if (+data[index].seminarHours) setValue(`seminarTeacher-0-${index}`, lectureTeacher);
+    if (data[index].offset) setValue(`offsetTeacher-0-${index}`, lectureTeacher);
+    if (data[index].exam) setValue(`examTeacher-0-${index}`, lectureTeacher);
+  };
 
   return (
     <Form isSubgroup={isSubgroup}>
@@ -49,7 +69,7 @@ export const Table = ({ teachersOptions, index }) => {
             />
           )}
         />
-        <AutoFillButton>
+        <AutoFillButton type='button' onClick={fillAllSelects}>
           <img src={AutoFill} alt='auto filling teachersOptions button' />
         </AutoFillButton>
       </Row>

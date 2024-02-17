@@ -43,10 +43,13 @@ export const StyledCell = styled.div`
   }
 
   &:nth-last-child(-n + 2) {
+    /* grid-column: ${({ isSubgroup }) => isSubgroup && '3 / 5'}; */
+  }
+  /* &:nth-last-child(-n + 2) {
     grid-column: ${({ isSubgroup }) => isSubgroup && '3 / 5'};
-  }
+  } */
 
-  &:last-child {
+  /* &:last-child {
     display: ${({ isSubgroup }) => isSubgroup && 'none'};
-  }
+  } */
 `;

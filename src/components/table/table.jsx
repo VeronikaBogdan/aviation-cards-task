@@ -1,5 +1,7 @@
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import Select from 'react-select';
+import { useFormContext, Controller } from 'react-hook-form';
 
 import { Row } from './row';
 
@@ -9,35 +11,24 @@ import RevoveCart from '../../assets/remove-cart.png';
 
 import { AddRemoveButton, AutoFillButton, Form, InputNumber, Textarea, selectStyles } from './styled-table';
 
-export const Table = () => {
-  const teachers = [
-    { value: 'vacancy', label: 'Вакансия', isDisabled: true },
-    { value: 'ocean', label: 'Ocean', isFixed: true },
-    { value: 'blue', label: 'Blue' },
-    { value: 'purple', label: 'Purple', isDisabled: true },
-    { value: 'red', label: 'Red', isFixed: true },
-    { value: 'orange', label: 'Orange' },
-  ];
+export const Table = ({ teachersOptions, index }) => {
+  const { register } = useFormContext();
+  const { data } = useSelector((state) => state.data);
 
-  const [isSubgroup, setIsSubgroup] = useState(false);
-  const [selectedLecturesTeacher, setSelectedLecturesTeacher] = useState(teachers[0]);
-  const [selectedLabsTeacher, setSelectedLabsTeacher] = useState(teachers[0]);
-
-  const [countStudents, setCountStudents] = useState(0);
-  const [note, setNote] = useState('');
-
-  const handleChangeNote = (event) => {
-    setNote(event.target.value);
-  };
-
-  const handleChangeCountStudents = (event) => {
-    setCountStudents(event.target.value);
-  };
+  const [isSubgroup, setIsSubgroup] = useState(data[index].countPodgroups > 1);
+  const [countPodgroups, setCountPodgroups] = useState(data[index].countPodgroups);
 
   return (
     <Form isSubgroup={isSubgroup}>
       <Row lesson='Занятие' hours='Часы' isTitled={true} isSubgroup={isSubgroup}>
-        <AddRemoveButton type='button' onClick={() => setIsSubgroup(!isSubgroup)} isSubgroup={isSubgroup}>
+        <AddRemoveButton
+          type='button'
+          onClick={() => {
+            countPodgroups === '1' ? setCountPodgroups('2') : setCountPodgroups('1');
+            setIsSubgroup(!isSubgroup);
+          }}
+          isSubgroup={isSubgroup}
+        >
           {isSubgroup ? (
             <img src={RevoveCart} alt='remove subgroup cart' />
           ) : (
@@ -45,37 +36,98 @@ export const Table = () => {
           )}
         </AddRemoveButton>
       </Row>
-      <Row lesson='Лекции' hours='22' isSubgroup={isSubgroup}>
-        <Select
-          name='lectures'
-          options={teachers}
-          defaultValue={selectedLecturesTeacher}
-          onChange={setSelectedLecturesTeacher}
-          styles={selectStyles}
+      <Row lesson='Лекции' hours={data[index].lecturesHours} isSubgroup={isSubgroup}>
+        <Controller
+          name={`lectureTeacher-0-${index}`}
+          render={({ field }) => (
+            <Select
+              {...field}
+              options={teachersOptions}
+              placeholder='Вакансия'
+              styles={selectStyles}
+              isDisabled={!+data[index].lecturesHours}
+            />
+          )}
         />
         <AutoFillButton>
-          <img src={AutoFill} alt='auto filling teachers button' />
+          <img src={AutoFill} alt='auto filling teachersOptions button' />
         </AutoFillButton>
       </Row>
-      <Row lesson='Лабораторные работы' hours='0' isSubgroup={isSubgroup}>
-        <Select
-          name='labs'
-          options={teachers}
-          defaultValue={selectedLabsTeacher}
-          onChange={setSelectedLabsTeacher}
-          styles={selectStyles}
+      <Row lesson='Лабораторные работы' hours={data[index].laboratoryHours} isSubgroup={isSubgroup}>
+        <Controller
+          name={`laboratoryTeacher-0-${index}`}
+          render={({ field }) => (
+            <Select
+              {...field}
+              options={teachersOptions}
+              placeholder='Вакансия'
+              styles={selectStyles}
+              isDisabled={!+data[index].laboratoryHours}
+            />
+          )}
         />
       </Row>
-      <Row lesson='Практические' hours='42' isSubgroup={isSubgroup}></Row>
-      <Row lesson='Семинарские' hours='0' isSubgroup={isSubgroup}></Row>
-      <Row lesson='Практические' hours='' isSubgroup={isSubgroup}></Row>
-      <Row lesson='Зачет' hours='' isSubgroup={isSubgroup}></Row>
-      <Row lesson='Экзамен' hours='' isSubgroup={isSubgroup}></Row>
-      <Row lesson='Количество человек' hours='' isSubgroup={isSubgroup}>
-        <InputNumber type='number' defaultValue={countStudents} onChange={handleChangeCountStudents} />
+      <Row lesson='Практические' hours={data[index].practicHours} isSubgroup={isSubgroup}>
+        <Controller
+          name={`practiceTeacher-0-${index}`}
+          render={({ field }) => (
+            <Select
+              {...field}
+              options={teachersOptions}
+              placeholder='Вакансия'
+              styles={selectStyles}
+              isDisabled={!+data[index].practicHours}
+            />
+          )}
+        />
       </Row>
+      <Row lesson='Семинарские' hours={data[index].seminarHours} isSubgroup={isSubgroup}>
+        <Controller
+          name={`seminarTeacher-0-${index}`}
+          render={({ field }) => (
+            <Select
+              {...field}
+              options={teachersOptions}
+              placeholder='Вакансия'
+              styles={selectStyles}
+              isDisabled={!+data[index].seminarHours}
+            />
+          )}
+        />
+      </Row>
+      {data[index].offset && (
+        <Row lesson='Зачет' hours='' isSubgroup={isSubgroup}>
+          <Controller
+            name={`offsetTeacher-0-${index}`}
+            render={({ field }) => (
+              <Select {...field} options={teachersOptions} placeholder='Вакансия' styles={selectStyles} />
+            )}
+          />
+        </Row>
+      )}
+      {data[index].exam && (
+        <Row lesson='Экзамен' hours='' isSubgroup={isSubgroup}>
+          <Controller
+            name={`examTeacher-0-${index}`}
+            render={({ field }) => (
+              <Select {...field} options={teachersOptions} placeholder='Вакансия' styles={selectStyles} />
+            )}
+          />
+        </Row>
+      )}
+      {countPodgroups > 1 && (
+        <Row lesson='Количество человек' hours='' isSubgroup={isSubgroup}>
+          <InputNumber
+            {...register(`countStudents-0-${index}`)}
+            type='number'
+            defaultValue={data[index].podgroups[0].countStudents}
+            min={1}
+            max={data[index].studentsNumber}
+          />
+        </Row>
+      )}
       <Row lesson='Примечание' hours='' isSubgroup={isSubgroup}>
-        <Textarea name='note' onChange={handleChangeNote} />
+        <Textarea {...register(`additionalInfo-${index}`)} defaultValue={data[index].additionalInfo} />
       </Row>
     </Form>
   );

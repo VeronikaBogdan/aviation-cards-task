@@ -2,9 +2,10 @@ import styled from 'styled-components';
 
 import { BLUE, COBALT, LIGHT_GRAY, MAYA_BLUE, WHITE } from '../../styles/constant';
 
-export const Form = styled.form`
+export const Form = styled.div`
   display: grid;
-  grid-template-columns: ${({ isSubgroup }) => (isSubgroup ? '2fr 1fr 2fr 2fr' : '2fr 1fr 3fr')};
+  grid-template-columns: 2fr 1fr 4fr;
+  /* grid-template-columns: ${({ isSubgroup }) => (isSubgroup ? '2fr 1fr 2fr 2fr' : '2fr 1fr 3fr')}; */
   margin-top: 15px;
 `;
 

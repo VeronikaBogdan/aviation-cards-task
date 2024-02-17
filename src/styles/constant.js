@@ -7,4 +7,5 @@ export const COBALT = '#2684FF';
 export const MAYA_BLUE = '#73C2FB';
 export const BLUE = '#303A65';
 export const GREEN = '#198754';
+export const DARK_GREEN = '#157147';
 export const WHITE = '#FFFFFF';

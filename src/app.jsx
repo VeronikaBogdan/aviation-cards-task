@@ -9,6 +9,7 @@ import { changeCountStudents, changeTeachers } from './utils/podrgoup-changer';
 
 import { Card } from './components/card';
 import { Content, InputSubmit, StyledContainer } from './components/layout/container';
+import { Loader } from './components/loader';
 
 export const App = () => {
   const dispatch = useDispatch();
@@ -61,7 +62,7 @@ export const App = () => {
 
   return (
     <FormProvider {...methods}>
-      {isPending && <div>Loading...</div>}
+      {isPending && <Loader />}
       {isVisible && (
         <StyledContainer onSubmit={methods.handleSubmit(onSubmit)}>
           <Content>

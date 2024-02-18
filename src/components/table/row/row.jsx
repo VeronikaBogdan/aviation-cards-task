@@ -1,6 +1,6 @@
 import { Cell } from '../cell';
 
-export const Row = ({ lesson, hours, isTitled, isSubgroup, children, childElement }) => (
+export const Row = ({ lesson, hours, isTitled, isSubgroup, children }) => (
   <>
     <Cell label={lesson} isTitled={isTitled} isLeft isSubgroup={isSubgroup} />
     <Cell label={hours} isTitled={isTitled} isSubgroup={isSubgroup} />
@@ -15,7 +15,6 @@ export const Row = ({ lesson, hours, isTitled, isSubgroup, children, childElemen
       isSubgroup={isSubgroup}
     >
       {children}
-      {/* {childElement} */}
     </Cell>
   </>
 );

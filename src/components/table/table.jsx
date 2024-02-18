@@ -16,76 +16,88 @@ export const Table = ({ teachersOptions, index }) => {
   const { data } = useSelector((state) => state.data);
 
   const [isSubgroup, setIsSubgroup] = useState(data[index].countPodgroups > 1);
-  const [countPodgroups, setCountPodgroups] = useState(data[index].countPodgroups);
-  const [lectureTeacher, setLectureTeacher] = useState('');
+  const [podgroups, setPodgroups] = useState(data[index].podgroups);
 
-  const keys = [
-    'lectureTeacher',
-    'laboratoryTeacher',
-    'practiceTeacher',
-    'seminarTeacher',
-    'examTeacher',
-    'offsetTeacher',
-  ];
+  const fillAllSelects = (indexPodgroup) => {
+    const lectureTeacher = getValues(`lectureTeacher-${indexPodgroup}-${index}`);
 
-  const fillAllSelects = () => {
-    const lectureTeacher = getValues(`lectureTeacher-0-${index}`);
-
-    if (+data[index].lecturesHours) setValue(`laboratoryTeacher-0-${index}`, lectureTeacher);
-    if (+data[index].practicHours) setValue(`practiceTeacher-0-${index}`, lectureTeacher);
-    if (+data[index].seminarHours) setValue(`seminarTeacher-0-${index}`, lectureTeacher);
-    if (data[index].offset) setValue(`offsetTeacher-0-${index}`, lectureTeacher);
-    if (data[index].exam) setValue(`examTeacher-0-${index}`, lectureTeacher);
+    if (+data[index].lecturesHours) setValue(`laboratoryTeacher-${indexPodgroup}-${index}`, lectureTeacher);
+    if (+data[index].practicHours) setValue(`practiceTeacher-${indexPodgroup}-${index}`, lectureTeacher);
+    if (+data[index].seminarHours) setValue(`seminarTeacher-${indexPodgroup}-${index}`, lectureTeacher);
+    if (data[index].offset) setValue(`offsetTeacher-${indexPodgroup}-${index}`, lectureTeacher);
+    if (data[index].exam) setValue(`examTeacher-${indexPodgroup}-${index}`, lectureTeacher);
   };
+
+  const copyData = structuredClone(data);
 
   return (
     <Form isSubgroup={isSubgroup}>
       <Row lesson='Занятие' hours='Часы' isTitled={true} isSubgroup={isSubgroup}>
         <AddRemoveButton
-          type='button'
           onClick={() => {
-            countPodgroups === '1' ? setCountPodgroups('2') : setCountPodgroups('1');
+            const halfStudents = copyData[index].studentsNumber / 2;
+            const podgroups = copyData[index].podgroups;
+
+            podgroups.push({ ...podgroups[0] });
+
+            setValue(`countStudents-0-${index}`, String(Math.ceil(halfStudents)));
+            setValue(`countStudents-1-${index}`, String(~~halfStudents));
+
+            setPodgroups(podgroups);
             setIsSubgroup(!isSubgroup);
           }}
-          isSubgroup={isSubgroup}
         >
-          {isSubgroup ? (
-            <img src={RevoveCart} alt='remove subgroup cart' />
-          ) : (
-            <img src={AddSubgroup} alt='remove subgroup cart' />
-          )}
+          <img src={AddSubgroup} alt='add subgroup cart' />
+        </AddRemoveButton>
+        <AddRemoveButton
+          onClick={() => {
+            setValue(`countStudents-0-${index}`, data[index].studentsNumber);
+            setValue(`countStudents-1-${index}`, '');
+            podgroups.pop();
+
+            setPodgroups(podgroups);
+            setIsSubgroup(!isSubgroup);
+          }}
+        >
+          <img src={RevoveCart} alt='remove subgroup cart' />
         </AddRemoveButton>
       </Row>
       <Row lesson='Лекции' hours={data[index].lecturesHours} isSubgroup={isSubgroup}>
-        <Controller
-          name={`lectureTeacher-0-${index}`}
-          render={({ field }) => (
-            <Select
-              {...field}
-              options={teachersOptions}
-              placeholder='Вакансия'
-              styles={selectStyles}
-              isDisabled={!+data[index].lecturesHours}
+        {podgroups.map((_, indexPodgroup) => (
+          <>
+            <Controller
+              name={`lectureTeacher-${indexPodgroup}-${index}`}
+              render={({ field }) => (
+                <Select
+                  {...field}
+                  options={teachersOptions}
+                  placeholder='Вакансия'
+                  styles={selectStyles}
+                  isDisabled={!+data[index].lecturesHours}
+                />
+              )}
             />
-          )}
-        />
-        <AutoFillButton type='button' onClick={fillAllSelects}>
-          <img src={AutoFill} alt='auto filling teachersOptions button' />
-        </AutoFillButton>
+            <AutoFillButton onClick={() => fillAllSelects(indexPodgroup)}>
+              <img src={AutoFill} alt='auto filling teachersOptions button' />
+            </AutoFillButton>
+          </>
+        ))}
       </Row>
       <Row lesson='Лабораторные работы' hours={data[index].laboratoryHours} isSubgroup={isSubgroup}>
-        <Controller
-          name={`laboratoryTeacher-0-${index}`}
-          render={({ field }) => (
-            <Select
-              {...field}
-              options={teachersOptions}
-              placeholder='Вакансия'
-              styles={selectStyles}
-              isDisabled={!+data[index].laboratoryHours}
-            />
-          )}
-        />
+        {podgroups.map((_, indexPodgroup) => (
+          <Controller
+            name={`laboratoryTeacher-${indexPodgroup}-${index}`}
+            render={({ field }) => (
+              <Select
+                {...field}
+                options={teachersOptions}
+                placeholder='Вакансия'
+                styles={selectStyles}
+                isDisabled={!+data[index].laboratoryHours}
+              />
+            )}
+          />
+        ))}
       </Row>
       <Row lesson='Практические' hours={data[index].practicHours} isSubgroup={isSubgroup}>
         <Controller
@@ -135,15 +147,15 @@ export const Table = ({ teachersOptions, index }) => {
           />
         </Row>
       )}
-      {countPodgroups > 1 && (
+      {podgroups.length === 2 && (
         <Row lesson='Количество человек' hours='' isSubgroup={isSubgroup}>
-          <InputNumber
-            {...register(`countStudents-0-${index}`)}
-            type='number'
-            defaultValue={data[index].podgroups[0].countStudents}
-            min={1}
-            max={data[index].studentsNumber}
-          />
+          {podgroups.map((_, indexPodgroup, podgroups) => (
+            <InputNumber
+              {...register(`countStudents-${indexPodgroup}-${index}`)}
+              defaultValue={podgroups[indexPodgroup].countStudents}
+              value={podgroups[indexPodgroup].countStudents}
+            />
+          ))}
         </Row>
       )}
       <Row lesson='Примечание' hours='' isSubgroup={isSubgroup}>

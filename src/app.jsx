@@ -35,9 +35,23 @@ export const App = () => {
     console.log(
       'app',
       data,
+
       '\ncopyData',
       copyData.map((card, index) => {
         card.additionalInfo = data[`additionalInfo-${index}`] || card.additionalInfo;
+
+        if (data[`countStudents-1-${index}`]) {
+          if (card.countPodgroups === '1') {
+            card.countPodgroups = '2';
+            card.podgroups.push({ countStudents: data[`countStudents-1-${index}`], ...card.podgroups[0] });
+          }
+        } else {
+          if (card.countPodgroups === '2') {
+            card.countPodgroups = '1';
+            card.podgroups.pop();
+          }
+        }
+
         card.podgroups.map((podgroup, indexPodgroup) => {
           changeCountStudents(index, podgroup, indexPodgroup, data);
           keys.map((key) => changeTeachers(key, index, podgroup, indexPodgroup, data));

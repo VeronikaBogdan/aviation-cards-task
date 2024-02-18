@@ -9,7 +9,7 @@ export const Form = styled.div`
   margin-top: 15px;
 `;
 
-export const AddRemoveButton = styled.button`
+export const AddRemoveButton = styled.button.attrs(() => ({ type: 'button' }))`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -31,7 +31,7 @@ export const AddRemoveButton = styled.button`
   }
 `;
 
-export const AutoFillButton = styled.button`
+export const AutoFillButton = styled.button.attrs(() => ({ type: 'button' }))`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -50,7 +50,7 @@ export const AutoFillButton = styled.button`
   }
 `;
 
-export const InputNumber = styled.input`
+export const InputNumber = styled.input.attrs(() => ({ type: 'number' }))`
   background-color: transparent;
   border: 0;
   outline: 0;

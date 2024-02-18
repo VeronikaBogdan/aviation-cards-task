@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { BLUE, LIGHT_BLUE_1, LIGHT_BLUE_2, LIGHT_GRAY } from '../../../styles/constant';
 
 export const StyledCell = styled.div`
-  display: flex;
+  display: ${({ length }) => (length === 1 ? 'none' : 'flex')};
   justify-content: center;
   align-items: center;
   gap: ${({ isTitled }) => isTitled && '5px'};

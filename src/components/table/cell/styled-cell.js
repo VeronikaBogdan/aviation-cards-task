@@ -4,7 +4,6 @@ import { BLUE, LIGHT_BLUE_1, LIGHT_BLUE_2, LIGHT_GRAY } from '../../../styles/co
 
 export const StyledCell = styled.div`
   display: flex;
-  /* display: ${({ $isSubgroup }) => ($isSubgroup ? 'grid' : 'flex')}; */
   justify-content: center;
   align-items: center;
   gap: ${({ $isTitled }) => $isTitled && '5px'};

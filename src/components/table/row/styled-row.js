@@ -16,8 +16,3 @@ export const StyledRow = styled.div`
     background-color: ${LIGHT_BLUE_1};
   }
 `;
-
-export const SubgroupWrapper = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-`;

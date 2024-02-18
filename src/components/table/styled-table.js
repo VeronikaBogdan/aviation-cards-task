@@ -2,10 +2,9 @@ import styled from 'styled-components';
 
 import { BLUE, COBALT, LIGHT_GRAY, MAYA_BLUE, WHITE } from '../../styles/constant';
 
-export const Form = styled.div`
+export const StyledTable = styled.div`
   display: grid;
   grid-template-columns: 2fr 1fr 4fr;
-  /* grid-template-columns: ${({ isSubgroup }) => (isSubgroup ? '2fr 1fr 2fr 2fr' : '2fr 1fr 3fr')}; */
   margin-top: 15px;
 `;
 
@@ -28,6 +27,19 @@ export const AddRemoveButton = styled.button.attrs(() => ({ type: 'button' }))`
 
   &:active {
     box-shadow: 0px 0px 5px 1px ${BLUE};
+  }
+`;
+
+export const Wrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: ${({ $isSubgroup }) => $isSubgroup && '10px'};
+
+  &:first-child {
+    border-right: ${({ $isSubgroup }) => $isSubgroup && `1px solid ${LIGHT_GRAY}`};
   }
 `;
 
@@ -60,6 +72,10 @@ export const InputNumber = styled.input.attrs(() => ({ type: 'number' }))`
   &::-webkit-outer-spin-button,
   &::-webkit-inner-spin-button {
     -webkit-appearance: none;
+  }
+
+  &:first-child {
+    border-right: 1px solid ${LIGHT_GRAY};
   }
 `;
 

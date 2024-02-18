@@ -9,7 +9,15 @@ import AutoFill from '../../assets/auto-fill.svg';
 import AddSubgroup from '../../assets/plus.svg';
 import RevoveCart from '../../assets/remove-cart.png';
 
-import { AddRemoveButton, AutoFillButton, Form, InputNumber, Textarea, selectStyles } from './styled-table';
+import {
+  AddRemoveButton,
+  AutoFillButton,
+  InputNumber,
+  StyledTable,
+  Textarea,
+  Wrapper,
+  selectStyles,
+} from './styled-table';
 
 export const Table = ({ teachersOptions, index }) => {
   const { register, getValues, setValue } = useFormContext();
@@ -31,40 +39,54 @@ export const Table = ({ teachersOptions, index }) => {
   const copyData = structuredClone(data);
 
   return (
-    <Form isSubgroup={isSubgroup}>
+    <StyledTable>
       <Row lesson='Занятие' hours='Часы' isTitled={true} isSubgroup={isSubgroup}>
-        <AddRemoveButton
-          onClick={() => {
-            const halfStudents = copyData[index].studentsNumber / 2;
-            const podgroups = copyData[index].podgroups;
+        {podgroups.length === 1 ? (
+          <Wrapper>
+            <p>Преподаватель</p>
+            <AddRemoveButton
+              onClick={() => {
+                const halfStudents = copyData[index].studentsNumber / 2;
+                const podgroups = copyData[index].podgroups;
 
-            podgroups.push({ ...podgroups[0] });
+                podgroups.push({ ...podgroups[0] });
 
-            setValue(`countStudents-0-${index}`, String(Math.ceil(halfStudents)));
-            setValue(`countStudents-1-${index}`, String(~~halfStudents));
+                setValue(`countStudents-0-${index}`, String(Math.ceil(halfStudents)));
+                setValue(`countStudents-1-${index}`, String(~~halfStudents));
 
-            setPodgroups(podgroups);
-            setIsSubgroup(!isSubgroup);
-          }}
-        >
-          <img src={AddSubgroup} alt='add subgroup cart' />
-        </AddRemoveButton>
-        <AddRemoveButton
-          onClick={() => {
-            setValue(`countStudents-0-${index}`, data[index].studentsNumber);
-            setValue(`countStudents-1-${index}`, '');
-            podgroups.pop();
+                setPodgroups(podgroups);
+                setIsSubgroup(!isSubgroup);
+              }}
+            >
+              <img src={AddSubgroup} alt='add subgroup cart' />
+            </AddRemoveButton>
+          </Wrapper>
+        ) : (
+          <>
+            <Wrapper $isSubgroup={isSubgroup}>
+              <p>Подгруппа 1</p>
+            </Wrapper>
+            <Wrapper>
+              <p>Подгруппа 2</p>
+              <AddRemoveButton
+                onClick={() => {
+                  setValue(`countStudents-0-${index}`, data[index].studentsNumber);
+                  setValue(`countStudents-1-${index}`, '');
+                  podgroups.pop();
 
-            setPodgroups(podgroups);
-            setIsSubgroup(!isSubgroup);
-          }}
-        >
-          <img src={RevoveCart} alt='remove subgroup cart' />
-        </AddRemoveButton>
+                  setPodgroups(podgroups);
+                  setIsSubgroup(!isSubgroup);
+                }}
+              >
+                <img src={RevoveCart} alt='remove subgroup cart' />
+              </AddRemoveButton>
+            </Wrapper>
+          </>
+        )}
       </Row>
       <Row lesson='Лекции' hours={data[index].lecturesHours} isSubgroup={isSubgroup}>
         {podgroups.map((_, indexPodgroup) => (
-          <>
+          <Wrapper key={indexPodgroup} $isSubgroup={isSubgroup}>
             <Controller
               name={`lectureTeacher-${indexPodgroup}-${index}`}
               render={({ field }) => (
@@ -80,87 +102,98 @@ export const Table = ({ teachersOptions, index }) => {
             <AutoFillButton onClick={() => fillAllSelects(indexPodgroup)}>
               <img src={AutoFill} alt='auto filling teachersOptions button' />
             </AutoFillButton>
-          </>
+          </Wrapper>
         ))}
       </Row>
       <Row lesson='Лабораторные работы' hours={data[index].laboratoryHours} isSubgroup={isSubgroup}>
         {podgroups.map((_, indexPodgroup) => (
+          <Wrapper $isSubgroup={isSubgroup}>
+            <Controller
+              key={indexPodgroup}
+              name={`laboratoryTeacher-${indexPodgroup}-${index}`}
+              render={({ field }) => (
+                <Select
+                  {...field}
+                  options={teachersOptions}
+                  placeholder='Вакансия'
+                  styles={selectStyles}
+                  isDisabled={!+data[index].laboratoryHours}
+                />
+              )}
+            />
+          </Wrapper>
+        ))}
+      </Row>
+      <Row lesson='Практические' hours={data[index].practicHours} isSubgroup={isSubgroup}>
+        <Wrapper $isSubgroup={isSubgroup}>
           <Controller
-            name={`laboratoryTeacher-${indexPodgroup}-${index}`}
+            name={`practiceTeacher-0-${index}`}
             render={({ field }) => (
               <Select
                 {...field}
                 options={teachersOptions}
                 placeholder='Вакансия'
                 styles={selectStyles}
-                isDisabled={!+data[index].laboratoryHours}
+                isDisabled={!+data[index].practicHours}
               />
             )}
           />
-        ))}
-      </Row>
-      <Row lesson='Практические' hours={data[index].practicHours} isSubgroup={isSubgroup}>
-        <Controller
-          name={`practiceTeacher-0-${index}`}
-          render={({ field }) => (
-            <Select
-              {...field}
-              options={teachersOptions}
-              placeholder='Вакансия'
-              styles={selectStyles}
-              isDisabled={!+data[index].practicHours}
-            />
-          )}
-        />
+        </Wrapper>
       </Row>
       <Row lesson='Семинарские' hours={data[index].seminarHours} isSubgroup={isSubgroup}>
-        <Controller
-          name={`seminarTeacher-0-${index}`}
-          render={({ field }) => (
-            <Select
-              {...field}
-              options={teachersOptions}
-              placeholder='Вакансия'
-              styles={selectStyles}
-              isDisabled={!+data[index].seminarHours}
-            />
-          )}
-        />
+        <Wrapper $isSubgroup={isSubgroup}>
+          <Controller
+            name={`seminarTeacher-0-${index}`}
+            render={({ field }) => (
+              <Select
+                {...field}
+                options={teachersOptions}
+                placeholder='Вакансия'
+                styles={selectStyles}
+                isDisabled={!+data[index].seminarHours}
+              />
+            )}
+          />
+        </Wrapper>
       </Row>
       {data[index].offset && (
         <Row lesson='Зачет' hours='' isSubgroup={isSubgroup}>
-          <Controller
-            name={`offsetTeacher-0-${index}`}
-            render={({ field }) => (
-              <Select {...field} options={teachersOptions} placeholder='Вакансия' styles={selectStyles} />
-            )}
-          />
+          <Wrapper $isSubgroup={isSubgroup}>
+            <Controller
+              name={`offsetTeacher-0-${index}`}
+              render={({ field }) => (
+                <Select {...field} options={teachersOptions} placeholder='Вакансия' styles={selectStyles} />
+              )}
+            />
+          </Wrapper>
         </Row>
       )}
       {data[index].exam && (
         <Row lesson='Экзамен' hours='' isSubgroup={isSubgroup}>
-          <Controller
-            name={`examTeacher-0-${index}`}
-            render={({ field }) => (
-              <Select {...field} options={teachersOptions} placeholder='Вакансия' styles={selectStyles} />
-            )}
-          />
+          <Wrapper $isSubgroup={isSubgroup}>
+            <Controller
+              name={`examTeacher-0-${index}`}
+              render={({ field }) => (
+                <Select {...field} options={teachersOptions} placeholder='Вакансия' styles={selectStyles} />
+              )}
+            />
+          </Wrapper>
         </Row>
       )}
       {podgroups.length === 2 && (
         <Row lesson='Количество человек' hours='' isSubgroup={isSubgroup}>
           {podgroups.map((_, indexPodgroup, podgroups) => (
             <InputNumber
+              key={indexPodgroup}
               {...register(`countStudents-${indexPodgroup}-${index}`)}
               defaultValue={podgroups[indexPodgroup].countStudents}
-              value={podgroups[indexPodgroup].countStudents}
             />
           ))}
         </Row>
       )}
-      <Row lesson='Примечание' hours='' isSubgroup={isSubgroup}>
+      <Row lesson='Примечание' hours=''>
         <Textarea {...register(`additionalInfo-${index}`)} defaultValue={data[index].additionalInfo} />
       </Row>
-    </Form>
+    </StyledTable>
   );
 };

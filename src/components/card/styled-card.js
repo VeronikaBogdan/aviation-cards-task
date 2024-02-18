@@ -5,7 +5,6 @@ import { BLUE, LIGHT_GRAY, SKY } from '../../styles/constant';
 export const StyledCard = styled.section`
   display: flex;
   flex-direction: column;
-  flex: 1;
   padding: 15px;
   border: 1px solid ${LIGHT_GRAY};
   border-radius: 2px;

@@ -8,23 +8,29 @@ export const StyledContainer = styled.form`
   width: calc(100vw - 50px);
   max-width: 1440px;
 
-  @media (max-width: 935px) {
-    max-width: 640px;
-  }
-
-  @media (max-width: 450px) {
-    width: calc(100vw - 20px);
+  @media (max-width: 950px) {
+    max-width: 650px;
   }
 `;
 
 export const Content = styled.main`
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
   gap: 25px;
   margin-bottom: 15px;
 
-  @media (max-width: 935px) {
-    grid-template-columns: 1fr;
+  @media (max-width: 1075px) {
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 20px;
+  }
+
+  @media (max-width: 950px) {
+    grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
+    gap: 15px;
+  }
+
+  @media (max-width: 550px) {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   }
 `;
 
@@ -44,5 +50,9 @@ export const InputSubmit = styled.input`
   &:active {
     background-color: ${DARK_GREEN};
     box-shadow: 0px 0px 5px 3px ${LIGHT_GRAY};
+  }
+
+  @media (max-width: 950px) {
+    width: 100%;
   }
 `;

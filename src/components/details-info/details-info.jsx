@@ -1,8 +1,10 @@
+import { formCommonDetails } from '../../utils/common-details-former';
+
 import { Detail, DetailName, Details } from './styled-details-info';
 
-export const DetailsInfo = ({ details }) => (
+export const DetailsInfo = ({ dataIndex }) => (
   <Details>
-    {details.map((detail) => (
+    {formCommonDetails(dataIndex).map((detail) => (
       <Detail key={detail.key}>
         <DetailName>{detail.name}</DetailName>
         <span>{detail.value}</span>

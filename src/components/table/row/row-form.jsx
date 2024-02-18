@@ -4,13 +4,15 @@ import { useFormContext, Controller } from 'react-hook-form';
 
 import AutoFill from '../../../assets/auto-fill.svg';
 
+import { formTeachersOptions } from '../../../utils/teachers-options-former';
+
 import { Row } from './row';
 import { AutoFillButton, Wrapper, selectStyles } from '../styled-table';
 
 export const RowForm = ({ lesson, hours, isSubgroup, podgroups, index, name, teachersOptions }) => {
   const { getValues, setValue } = useFormContext();
 
-  const { data } = useSelector((state) => state.data);
+  const { data, teachers } = useSelector((state) => state.data);
 
   const fillAllSelects = (data, indexPodgroup, index) => {
     const lectureTeacher = getValues(`lectureTeacher-${indexPodgroup}-${index}`);
@@ -27,14 +29,14 @@ export const RowForm = ({ lesson, hours, isSubgroup, podgroups, index, name, tea
   return (
     <Row lesson={lesson} hours={hours} isSubgroup={isSubgroup}>
       {podgroups.map((_, indexPodgroup) => (
-        <Wrapper $isSubgroup={isSubgroup}>
+        <Wrapper $isSubgroup={isSubgroup} key={indexPodgroup}>
           <Controller
             key={indexPodgroup}
             name={`${name}-${indexPodgroup}-${index}`}
             render={({ field }) => (
               <Select
                 {...field}
-                options={teachersOptions}
+                options={formTeachersOptions(teachers)}
                 placeholder='Вакансия'
                 styles={selectStyles}
                 isDisabled={isDisabled}

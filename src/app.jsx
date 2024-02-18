@@ -21,6 +21,7 @@ export const App = () => {
   }, []);
 
   const copyData = structuredClone(data);
+
   const keys = [
     'lectureTeacher',
     'laboratoryTeacher',
@@ -33,10 +34,6 @@ export const App = () => {
 
   const onSubmit = (data) =>
     console.log(
-      'app',
-      data,
-
-      '\ncopyData',
       copyData.map((card, index) => {
         card.additionalInfo = data[`additionalInfo-${index}`] || card.additionalInfo;
 

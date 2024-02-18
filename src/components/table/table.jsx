@@ -11,7 +11,7 @@ import { Row, RowForm } from './row';
 
 import { AddRemoveButton, InputNumber, StyledTable, Textarea, Wrapper } from './styled-table';
 
-export const Table = ({ teachersOptions, index }) => {
+export const Table = ({ index }) => {
   const { register, setValue } = useFormContext();
   const { data } = useSelector((state) => state.data);
 
@@ -75,28 +75,13 @@ export const Table = ({ teachersOptions, index }) => {
           podgroups={podgroups}
           index={index}
           name={row.name}
-          teachersOptions={teachersOptions}
         />
       ))}
       {data[index].offset && (
-        <RowForm
-          lesson='Зачет'
-          isSubgroup={isSubgroup}
-          podgroups={podgroups}
-          index={index}
-          name='offsetTeacher'
-          teachersOptions={teachersOptions}
-        />
+        <RowForm lesson='Зачет' isSubgroup={isSubgroup} podgroups={podgroups} index={index} name='offsetTeacher' />
       )}
       {data[index].exam && (
-        <RowForm
-          lesson='Экзамен'
-          isSubgroup={isSubgroup}
-          podgroups={podgroups}
-          index={index}
-          name='examTeacher'
-          teachersOptions={teachersOptions}
-        />
+        <RowForm lesson='Экзамен' isSubgroup={isSubgroup} podgroups={podgroups} index={index} name='examTeacher' />
       )}
       {podgroups.length === 2 && (
         <Row lesson='Количество человек' hours='' isSubgroup={isSubgroup}>
@@ -105,6 +90,7 @@ export const Table = ({ teachersOptions, index }) => {
               key={indexPodgroup}
               {...register(`countStudents-${indexPodgroup}-${index}`)}
               defaultValue={podgroups[indexPodgroup].countStudents}
+              min={1}
             />
           ))}
         </Row>

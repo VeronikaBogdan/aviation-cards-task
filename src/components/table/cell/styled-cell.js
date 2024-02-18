@@ -32,7 +32,7 @@ export const StyledCell = styled.div`
 
 export const SubgroupWrapper = styled.div`
   display: grid;
-  grid-template-columns: ${({ $isSubgroup }) => ($isSubgroup ? '1fr 1fr' : '1fr')};
+  grid-template-columns: ${({ $isSubgroup }) => ($isSubgroup ? 'repeat(auto-fit, minmax(100px, 1fr))' : '1fr')};
   width: 100%;
   height: 100%;
 `;

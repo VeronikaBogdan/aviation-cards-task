@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useForm, FormProvider } from 'react-hook-form';
 
 import { loadDataAsync } from './redux/reducers/data/thunks';
+import { postResultAsync } from './redux/reducers/result/thunks';
 
 import { changeCountStudents, changeTeachers } from './utils/podrgoup-changer';
 
@@ -12,7 +13,7 @@ import { Content, InputSubmit, StyledContainer } from './components/layout/conta
 export const App = () => {
   const dispatch = useDispatch();
   const methods = useForm();
-  const { data, isPending, isError } = useSelector((state) => state.data);
+  const { data, teachers, isPending, isError } = useSelector((state) => state.data);
 
   const isVisible = !isPending && !isError;
 
@@ -32,31 +33,31 @@ export const App = () => {
     'countStudents',
   ];
 
-  const onSubmit = (data) =>
-    console.log(
-      copyData.map((card, index) => {
-        card.additionalInfo = data[`additionalInfo-${index}`] || card.additionalInfo;
+  const onSubmit = (data) => {
+    copyData.map((card, index) => {
+      card.additionalInfo = data[`additionalInfo-${index}`] || card.additionalInfo;
 
-        if (data[`countStudents-1-${index}`]) {
-          if (card.countPodgroups === '1') {
-            card.countPodgroups = '2';
-            card.podgroups.push({ countStudents: data[`countStudents-1-${index}`], ...card.podgroups[0] });
-          }
-        } else {
-          if (card.countPodgroups === '2') {
-            card.countPodgroups = '1';
-            card.podgroups.pop();
-          }
+      if (data[`countStudents-1-${index}`]) {
+        if (card.countPodgroups === '1') {
+          card.countPodgroups = '2';
+          card.podgroups.push({ countStudents: data[`countStudents-1-${index}`], ...card.podgroups[0] });
         }
+      } else {
+        if (card.countPodgroups === '2') {
+          card.countPodgroups = '1';
+          card.podgroups.pop();
+        }
+      }
 
-        card.podgroups.map((podgroup, indexPodgroup) => {
-          changeCountStudents(index, podgroup, indexPodgroup, data);
-          keys.map((key) => changeTeachers(key, index, podgroup, indexPodgroup, data));
-        });
-      }),
-      '\npodgroups',
-      copyData
-    );
+      card.podgroups.map((podgroup, indexPodgroup) => {
+        changeCountStudents(index, podgroup, indexPodgroup, data);
+        keys.map((key) => changeTeachers(key, index, podgroup, indexPodgroup, data));
+      });
+    });
+
+    // dispatch(postResultAsync(copyData));
+    dispatch(postResultAsync({ data: [...copyData], teachers: [...teachers] }));
+  };
 
   return (
     <FormProvider {...methods}>

@@ -94,6 +94,23 @@ export const Textarea = styled.textarea`
   }
 `;
 
+export const NoteWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  span:not(:first-child) {
+    font-size: 14px;
+    line-height: 18px;
+  }
+
+  @media (max-width: 768px) {
+    span:not(:first-child) {
+      font-size: 12px;
+      line-height: 16px;
+    }
+  }
+`;
+
 export const selectStyles = {
   container: (styles) => ({ ...styles, width: '100%' }),
   menuList: (styles) => ({ ...styles, maxHeight: '130px' }),

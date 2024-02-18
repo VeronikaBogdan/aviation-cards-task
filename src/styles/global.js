@@ -17,9 +17,5 @@ export const GlobalStyles = createGlobalStyle`
         font-size: 18px;
         line-height: 22px;
       }
-      @media (min-width: 1600px) {
-        font-size: 20px;
-        line-height: 24px;
-      }
     }
 `;

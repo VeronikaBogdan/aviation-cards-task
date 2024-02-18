@@ -9,7 +9,7 @@ import { formConstantData } from '../../utils/constant-data-former';
 
 import { Row, RowForm } from './row';
 
-import { AddRemoveButton, InputNumber, StyledTable, Textarea, Wrapper } from './styled-table';
+import { AddRemoveButton, InputNumber, NoteWrapper, StyledTable, Textarea, Wrapper } from './styled-table';
 
 export const Table = ({ index }) => {
   const { register, setValue } = useFormContext();
@@ -84,7 +84,7 @@ export const Table = ({ index }) => {
         <RowForm lesson='Экзамен' isSubgroup={isSubgroup} podgroups={podgroups} index={index} name='examTeacher' />
       )}
       {podgroups.length === 2 && (
-        <Row lesson='Количество человек' hours='' isSubgroup={isSubgroup}>
+        <Row lesson='Количество человек' isSubgroup={isSubgroup}>
           {podgroups.map((_, indexPodgroup, podgroups) => (
             <InputNumber
               key={indexPodgroup}
@@ -95,7 +95,14 @@ export const Table = ({ index }) => {
           ))}
         </Row>
       )}
-      <Row lesson='Примечание' hours=''>
+      <Row
+        lesson={
+          <NoteWrapper>
+            <span>Примечание</span>
+            <span>(для составления расписания)</span>
+          </NoteWrapper>
+        }
+      >
         <Textarea {...register(`additionalInfo-${index}`)} defaultValue={data[index].additionalInfo} />
       </Row>
     </StyledTable>

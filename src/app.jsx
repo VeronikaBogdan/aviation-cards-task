@@ -56,8 +56,7 @@ export const App = () => {
       });
     });
 
-    // dispatch(postResultAsync(copyData));
-    dispatch(postResultAsync({ data: [...copyData], teachers: [...teachers] }));
+    dispatch(postResultAsync(copyData));
   };
 
   return (
